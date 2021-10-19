@@ -1,8 +1,8 @@
 use actix_web::{get, web, App, HttpServer, Responder};
 
-#[get("/{id}/{name}/index.html")]
-async fn index(web::Path((id, name)): web::Path<(u32, String)>) -> impl Responder {
-    format!("Hello {}! id:{}", name, id)
+#[get("/{lyric}/index.html")]
+async fn index(web::Path((lyric)): web::Path<(String)>) -> impl Responder {
+    format!("この {} を調べます！", lyric)
 }
 
 #[actix_web::main]
