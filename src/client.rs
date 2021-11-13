@@ -11,10 +11,11 @@ impl Client {
         }
     }
 
-    pub async fn get(&self) -> actix_web::web::Bytes {
+    pub async fn get(&self) -> String {
         let url = "https://www.google.com/search?q=%E5%90%9B%E3%81%8C%E5%A5%BD%E3%81%8D+%E6%AD%8C%E8%A9%9E";
         let mut response = self.actix_client.get(url).send().await.unwrap();
-        let body = response.body().await.unwrap();
+        let byte = response.body().await.unwrap();
+        let body = byte.iter().map(|&s| s as char).collect::<String>();
 
         body
     }
