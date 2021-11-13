@@ -1,8 +1,28 @@
-use actix_web::{get, web, App, HttpServer, Responder};
+mod client;
+mod parser;
 
-#[get("/{id}/{name}/index.html")]
-async fn index(web::Path((id, name)): web::Path<(u32, String)>) -> impl Responder {
-    format!("Hello {}! id:{}", name, id)
+use actix_web::{get, web, App, HttpServer, Responder, HttpResponse};
+use client::Client;
+use parser::Parser;
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Todo {
+    content: String,
+    done: bool,
+}
+
+#[get("/{lyric}/index.html")]
+async fn index(web::Path(lyric): web::Path<String>) -> impl Responder {
+    let client = Client::new();
+
+    let body = client.get().await;
+    let ele = Parser::search_lyric(&body).await;
+
+    HttpResponse::Ok().json(Todo {
+        content: ele,
+        done: false,
+    })
 }
 
 #[actix_web::main]
