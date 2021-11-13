@@ -1,5 +1,4 @@
 use actix_web::client::Client as ActixClient;
-extern crate base64;
 
 pub struct Client {
     actix_client: ActixClient,
@@ -13,6 +12,7 @@ impl Client {
     }
 
     pub async fn get(&self, path: &str) -> String {
+        // NOTE: Rustで日本語の入っているURLはアクセスできないのでpathは英語であること。あとでちゃんと調べる
         let url = format!("https://www.google.com/search?q={}+kashi", path);
         let mut response = self.actix_client.get(url).send().await.unwrap();
         let byte = response.body().await.unwrap();
