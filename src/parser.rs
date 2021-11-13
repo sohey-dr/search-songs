@@ -1,7 +1,6 @@
 use scraper::{Html, Selector};
 
-pub struct Parser {
-}
+pub struct Parser {}
 
 impl Parser {
     pub async fn search_lyric(body: &str) -> String {
