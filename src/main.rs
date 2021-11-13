@@ -16,9 +16,8 @@ struct Todo {
 async fn index(web::Path(lyric): web::Path<String>) -> impl Responder {
     let client = Client::new();
 
-    let bytes = client.get().await;
-    let body = &bytes.iter().map(|&s| s as char).collect::<String>();
-    let ele = search_lyric(body).await;
+    let body = client.get().await;
+    let ele = search_lyric(&body).await;
 
     HttpResponse::Ok().json(Todo {
         content: ele,
