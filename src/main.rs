@@ -8,7 +8,6 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 struct Todo {
-    content: String,
     done: bool,
 }
 
@@ -20,7 +19,6 @@ async fn index(web::Path(lyric): web::Path<String>) -> impl Responder {
     let ele = Parser::search_lyric(&body).await;
 
     HttpResponse::Ok().json(Todo {
-        content: ele,
         done: false,
     })
 }
