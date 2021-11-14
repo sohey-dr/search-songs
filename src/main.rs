@@ -7,7 +7,7 @@ use client::Client;
 use parser::Parser;
 use models::link::Links;
 
-#[get("/{lyric}/index.html")]
+#[get("search/{lyric}")]
 async fn index(web::Path(lyric): web::Path<String>) -> impl Responder {
     let client = Client::new();
 

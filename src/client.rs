@@ -17,7 +17,27 @@ impl Client {
         let mut response = self.actix_client.get(url).send().await.unwrap();
         let byte = response.body().await.unwrap();
         let body = byte.iter().map(|&s| s as char).collect::<String>();
+        println!("{}", body);
 
         body
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[actix_rt::test]
+    async fn get_html() {
+        let client = Client::new();
+        let body = client.get("kashi").await;
+        assert_eq!(body.contains("<!doctype html>"), true);
+    }
+
+    #[actix_rt::test]
+    async fn use_path() {
+        let client = Client::new();
+        let body = client.get("we+just+gifted").await;
+        assert_eq!(body.contains("we just gifted"), true);
     }
 }

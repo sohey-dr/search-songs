@@ -28,3 +28,38 @@ impl Parser {
         links
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[actix_rt::test]
+    async fn test_search_lyric() {
+        let body = r#"
+            <!DOCTYPE html>
+            <html lang="ja">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <meta http-equiv="X-UA-Compatible" content="ie=edge">
+                <title>UTA-NET</title>
+            <head>
+            <body>
+                <div class="kCrYT">
+                    <a href="/url?q=https://uta-net/test.com&sa=U&ved=2ahUKEwjXo5Hg_5b0AhXwrpUCHUJ8Br8QFnoECAcQAg&usg=AOvVaw2-3NlnEVmn0zcGPv-8ANKZ">test 歌詞</a>
+                </div>
+                <div class="kCrYT">
+                    <a href="/url?q=https://utamap-net/test.com&sa=U&ved=2ahUKEwjXo5Hg_5b0AhXwrpUCHUJ8Br8QFnoECAcQAg&usg=AOvVaw2-3NlnEVmn0zcGPv-8ANKZ">testの歌詞です</a>
+                </div>
+            </body>
+            </html>
+        "#;
+
+        let links = Parser::search_lyric(body).await;
+        assert_eq!(links.len(), 2);
+        assert_eq!(links[0].url, "https://uta-net/test.com");
+        assert_eq!(links[0].title, "test 歌詞");
+        assert_eq!(links[1].url, "https://utamap-net/test.com");
+        assert_eq!(links[1].title, "testの歌詞です");
+    }
+}
