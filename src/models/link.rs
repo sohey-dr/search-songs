@@ -2,11 +2,11 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Links {
-    links: Vec<Link>,
+    pub links: Vec<Link>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Link {
-    url: String,
-    title: String,
+    pub url: String,
+    pub title: String,
 }
