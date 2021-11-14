@@ -1,10 +1,11 @@
 use scraper::{Html, Selector};
 use std::collections::HashMap;
+use crate::models::link::Link;
 
 pub struct Parser {}
 
 impl Parser {
-    pub async fn search_lyric(body: &str) -> Vec<HashMap<&str, String>> {
+    pub async fn search_lyric(body: &str) -> Vec<Link> {
         let document = Html::parse_document(&body);
         let selector = Selector::parse(".kCrYT > a").unwrap();
 
@@ -17,9 +18,10 @@ impl Parser {
             let url = &href[7..last_index];
 
             if url.contains("uta-net") || url.contains("j-lyric.net") || url.contains("utamap") {
-                let mut link = HashMap::new();
-                link.insert("title", node.text().collect::<Vec<_>>()[0].to_string());
-                link.insert("url", url.to_string());
+                let link = Link {
+                    url: url.to_string(),
+                    title: node.text().collect::<Vec<_>>()[0].to_string(),
+                };
                 links.push(link);
             }
         }
