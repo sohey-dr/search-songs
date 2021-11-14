@@ -1,5 +1,4 @@
 use scraper::{Html, Selector};
-use std::collections::HashMap;
 use crate::models::link::Link;
 
 pub struct Parser {}

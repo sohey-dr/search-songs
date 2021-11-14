@@ -1,26 +1,24 @@
 mod client;
 mod parser;
+mod models;
 
 use actix_web::{get, web, App, HttpServer, Responder, HttpResponse};
 use client::Client;
 use parser::Parser;
-use serde::{Deserialize, Serialize};
-
-#[derive(Debug, Serialize, Deserialize)]
-struct Todo {
-    done: bool,
-}
+use models::link::Links;
 
 #[get("/{lyric}/index.html")]
 async fn index(web::Path(lyric): web::Path<String>) -> impl Responder {
     let client = Client::new();
 
     let body = client.get(&lyric).await;
-    let ele = Parser::search_lyric(&body).await;
+    let links = Parser::search_lyric(&body).await;
 
-    HttpResponse::Ok().json(Todo {
-        done: false,
-    })
+    HttpResponse::Ok().json(
+        Links {
+            links: links,
+        },
+    )
 }
 
 #[actix_web::main]
