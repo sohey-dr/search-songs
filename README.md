@@ -8,4 +8,4 @@ This is a simple search engine for songs.
     $ cargo run
     ```
 2. 検索したい曲名を英語でpathに指定  
-例) https://localhost:8080/waninatteodorou/index.html
+例) https://localhost:8080/search/waninatteodorou/
